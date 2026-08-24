@@ -1,0 +1,96 @@
+/* ImageGallery.module.css */
+
+.gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Main image */
+.mainWrap {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    aspect-ratio: 1 / 1;
+}
+
+.mainImage {
+    object-fit: contain;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 16px;
+    transition: transform 0.3s ease;
+}
+
+.mainImage:hover {
+    transform: scale(1.04);
+}
+
+/* Arrows */
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: background var(--transition-fast);
+}
+
+.arrow:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.arrowLeft {
+    left: 12px;
+}
+
+.arrowRight {
+    right: 12px;
+}
+
+/* Thumbnails */
+.thumbs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.thumb {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 2px solid var(--color-border);
+    background: var(--color-surface);
+    cursor: pointer;
+    padding: 0;
+    transition: border-color var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.thumb:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.thumbActive {
+    border-color: var(--color-text-primary);
+}
+
+.thumbImg {
+    object-fit: cover;
+    width: 100% !important;
+    height: 100% !important;
+}

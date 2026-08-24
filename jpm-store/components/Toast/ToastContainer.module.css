@@ -1,0 +1,120 @@
+/* ToastContainer.module.css */
+
+/* Fixed container — bottom right */
+.container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+    max-width: 360px;
+    width: 100%;
+}
+
+/* Individual toast */
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    background: #1c1c1c;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    backdrop-filter: blur(16px);
+    pointer-events: all;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+
+    /* Slide-up + fade-in */
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+    transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toast.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Type colors */
+.icon {
+    flex-shrink: 0;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.success .icon {
+    color: #22c55e;
+}
+
+.info .icon {
+    color: #4f8ef7;
+}
+
+.warning .icon {
+    color: #f59e0b;
+}
+
+.error .icon {
+    color: #ef4444;
+}
+
+.success {
+    border-color: rgba(34, 197, 94, 0.2);
+    background: rgba(34, 197, 94, 0.08);
+}
+
+.info {
+    border-color: rgba(79, 142, 247, 0.2);
+    background: rgba(79, 142, 247, 0.08);
+}
+
+.warning {
+    border-color: rgba(245, 158, 11, 0.2);
+    background: rgba(245, 158, 11, 0.08);
+}
+
+.error {
+    border-color: rgba(239, 68, 68, 0.2);
+    background: rgba(239, 68, 68, 0.08);
+}
+
+.message {
+    flex: 1;
+    line-height: 1.4;
+}
+
+.closeBtn {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: color var(--transition-fast);
+}
+
+.closeBtn:hover {
+    color: var(--color-text-primary);
+}
+
+@media (max-width: 480px) {
+    .container {
+        bottom: 16px;
+        right: 16px;
+        left: 16px;
+        max-width: none;
+    }
+}

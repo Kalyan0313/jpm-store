@@ -1,0 +1,240 @@
+/* HeroBanner.module.css — Static, Production-Grade technology Hero Section */
+
+/* ── Hero Container ──────────────────────────────────────── */
+.hero {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - var(--announcement-height) - var(--navbar-height));
+    min-height: 560px;
+    max-height: 800px;
+    overflow: hidden;
+    background: #050608;
+    display: flex;
+    align-items: center;
+}
+
+/* ── High-End Static Background ────────────────────────── */
+.bgLayer {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image: url('/hero_static_bg.png');
+    background-size: contain;
+    background-position: center;
+    opacity: 0.98;
+    pointer-events: none;
+}
+
+/* Linear-gradient masking for seamless blending and text readability protection */
+.bgLayer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, #050608 20%, rgba(5, 6, 8, 0.4) 60%, #050608 95%),
+        linear-gradient(to bottom, #050608 0%, transparent 15%, transparent 85%, #050608 100%);
+}
+
+.bgGlow {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: radial-gradient(circle at 65% 50%, rgba(139, 92, 246, 0.15) 0%, rgba(59, 130, 246, 0.08) 50%, transparent 80%);
+    pointer-events: none;
+    filter: blur(80px);
+}
+
+/* ── Foreground Layout ──────────────────────────────────── */
+.inner {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+}
+
+/* ── Left Column: Typography & CTAs ──────────────────────── */
+.textCol {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 580px;
+    animation: slideUpFade 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+}
+
+.eyebrowDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #3b82f6;
+    animation: beacon 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.6);
+}
+
+@keyframes beacon {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.4;
+        transform: scale(0.85);
+    }
+}
+
+.heading {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1.05;
+}
+
+.headingLight {
+    font-size: clamp(38px, 5.5vw, 68px);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    opacity: 0.95;
+}
+
+.headingOutline {
+    font-size: clamp(38px, 5.5vw, 68px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    -webkit-text-stroke: 1.2px rgba(255, 255, 255, 0.8);
+    color: transparent;
+    display: block;
+}
+
+.headingAccent {
+    font-size: clamp(44px, 6.2vw, 80px);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: #3b82f6;
+    display: block;
+    line-height: 1.1;
+    text-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
+}
+
+.desc {
+    font-size: var(--font-size-md);
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.8;
+    max-width: 520px;
+    letter-spacing: -0.01em;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.ctaBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #050608;
+    background: #ffffff;
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    padding: 14px 28px;
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+}
+
+.ctaBtn:hover {
+    background: #f3f4f6;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.25);
+}
+
+.ctaArrow {
+    font-size: 16px;
+    transition: transform 0.2s ease;
+}
+
+.ctaBtn:hover .ctaArrow {
+    transform: translateX(4px);
+}
+
+.secondaryBtn {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-text-primary);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    padding: 14px 28px;
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.secondaryBtn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+/* ── Responsive Viewports ───────────────────────────────── */
+@media (max-width: 768px) {
+    .hero {
+        height: auto;
+        min-height: 500px;
+        padding-top: 100px;
+        padding-bottom: 80px;
+    }
+
+    .textCol {
+        align-items: center;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .desc {
+        max-width: 440px;
+    }
+
+    .actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+    }
+
+    .ctaBtn,
+    .secondaryBtn {
+        width: 100%;
+        justify-content: center;
+    }
+}

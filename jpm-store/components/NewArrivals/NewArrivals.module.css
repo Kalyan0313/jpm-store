@@ -1,0 +1,63 @@
+/* NewArrivals.module.css */
+
+.section {
+    padding: 0 0 var(--spacing-3xl);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-xl);
+    gap: var(--spacing-lg);
+}
+
+.title {
+    font-size: var(--font-size-2xl);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-text-primary);
+}
+
+.subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin-top: var(--spacing-xs);
+}
+
+.viewAllBtn {
+    padding: 10px 24px;
+    flex-shrink: 0;
+    font-size: var(--font-size-xs);
+}
+
+/* Horizontal scroll row */
+.row {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.row::-webkit-scrollbar {
+    display: none;
+}
+
+.cardSlot {
+    flex: 0 0 240px;
+    scroll-snap-align: start;
+}
+
+@media (max-width: 600px) {
+    .cardSlot {
+        flex: 0 0 180px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

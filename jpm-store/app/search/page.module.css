@@ -1,0 +1,33 @@
+/* app/search/page.module.css */
+
+.page {
+    padding: var(--spacing-2xl) 0 var(--spacing-3xl);
+    min-height: 60vh;
+}
+
+.header {
+    margin-bottom: var(--spacing-2xl);
+}
+
+.title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    letter-spacing: -0.02em;
+}
+
+.query {
+    color: var(--color-text-secondary);
+}
+
+.hint {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin-top: var(--spacing-sm);
+}
+
+.error {
+    font-size: var(--font-size-sm);
+    color: var(--color-error);
+    margin-top: var(--spacing-sm);
+}

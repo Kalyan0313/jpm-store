@@ -1,0 +1,52 @@
+/* FilterBar.module.css */
+
+.bar {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+}
+
+.selectWrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.select {
+    appearance: none;
+    -webkit-appearance: none;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    font-family: var(--font-family);
+    padding: 9px 36px 9px 14px;
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+    outline: none;
+}
+
+.select:hover,
+.select:focus {
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.select option {
+    background: #1e1e1e;
+    color: var(--color-text-primary);
+}
+
+.selectArrow {
+    position: absolute;
+    right: 12px;
+    font-size: 11px;
+    color: var(--color-text-muted);
+    pointer-events: none;
+}

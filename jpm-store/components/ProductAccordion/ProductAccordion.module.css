@@ -1,0 +1,64 @@
+/* ProductAccordion.module.css */
+
+.accordion {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--color-border);
+    margin-top: var(--spacing-md);
+}
+
+.item {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    background: transparent;
+    border: none;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: color var(--transition-fast);
+}
+
+.trigger:hover {
+    color: var(--color-text-secondary);
+}
+
+.icon {
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    transition: transform var(--transition-base);
+}
+
+.open .icon {
+    transform: rotate(180deg);
+}
+
+/* Animated panel */
+.panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.panelInner {
+    padding-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.line {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+}

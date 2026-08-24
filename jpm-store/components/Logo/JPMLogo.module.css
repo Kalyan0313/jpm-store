@@ -1,0 +1,27 @@
+/* JPMLogo.module.css */
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.img {
+    display: block;
+    object-fit: contain;
+    /* The logo has a gray bg — mix-blend-mode lightens it on the dark navbar */
+    filter: brightness(1.1) contrast(1.05);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Size variants */
+.sm .img {
+    width: 36px;
+    height: 36px;
+}
+
+
+.lg .img {
+    width: 64px;
+    height: 64px;
+}

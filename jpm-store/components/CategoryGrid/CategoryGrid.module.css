@@ -1,0 +1,174 @@
+/* CategoryGrid.module.css */
+
+.section {
+    padding: var(--spacing-3xl) 0;
+}
+
+.header {
+    margin-bottom: var(--spacing-2xl);
+    text-align: center;
+}
+
+.title {
+    font-size: var(--font-size-2xl);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-text-primary);
+}
+
+.subtitle {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+    margin-top: var(--spacing-sm);
+}
+
+/* Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+/* Card */
+.card {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    height: 280px;
+    cursor: pointer;
+    border: 1px solid var(--color-border);
+    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Background */
+.cardBg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    transition: opacity var(--transition-slow);
+}
+
+.card:hover .cardBg {
+    opacity: 1.15;
+}
+
+/* Glow */
+.cardGlow {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Content */
+.cardContent {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 24px 16px 16px;
+    gap: 12px;
+}
+
+.cardImage {
+    width: 130px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform var(--transition-base);
+}
+
+.card:hover .cardImage {
+    transform: scale(1.08) translateY(-4px);
+}
+
+.catImage {
+    object-fit: contain;
+    width: 100% !important;
+    height: 100% !important;
+    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5));
+}
+
+.cardText {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.cardDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-bottom: 2px;
+}
+
+.cardLabel {
+    font-size: var(--font-size-md);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    letter-spacing: -0.01em;
+}
+
+.cardDesc {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+}
+
+/* Hover arrow */
+.cardArrow {
+    position: absolute;
+    bottom: 16px;
+    right: 18px;
+    z-index: 3;
+    font-size: 18px;
+    font-weight: 700;
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: all var(--transition-base);
+}
+
+.card:hover .cardArrow {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .card {
+        height: 220px;
+    }
+
+    .cardImage {
+        width: 90px;
+        height: 90px;
+    }
+}

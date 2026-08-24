@@ -1,0 +1,48 @@
+/* ProductGrid.module.css */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.empty {
+    padding: var(--spacing-3xl) 0;
+    text-align: center;
+}
+
+.emptyIcon {
+    font-size: 48px;
+    margin-bottom: var(--spacing-md);
+}
+
+.emptyTitle {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.emptyDesc {
+    font-size: var(--font-size-base);
+    color: var(--color-text-muted);
+}
+
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+}
+
+@media (max-width: 400px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
