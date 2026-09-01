@@ -1,7 +1,29 @@
 import { Product } from '../models/Product.js';
 import { AppError } from '../utils/appError.js';
+import { cacheGet, cacheSet, cacheDel } from '../config/redis.js';
+import { logger } from '../utils/logger.js';
 
-export const getProducts = async (queryParams) => {
+// Cache TTL in seconds (30 minutes)
+const PRODUCT_CACHE_TTL = 1800;
+
+const buildCacheKey = (prefix, params = {}) => {
+    const sortedKeys = Object.keys(params).sort();
+    const serializedParams = sortedKeys.map((k) => `${k}=${params[k]}`).join('&');
+    return serializedParams ? `${prefix}:${serializedParams}` : prefix;
+};
+
+export const getProducts = async (queryParams = {}) => {
+    const cacheKey = buildCacheKey('products:list', queryParams);
+
+    // 1) Check Redis cache
+    const cachedData = await cacheGet(cacheKey);
+    if (cachedData) {
+        logger.info(`⚡ Redis Cache HIT: ${cacheKey}`);
+        return { ...cachedData, _source: 'redis' };
+    }
+
+    logger.info(`🍃 Redis Cache MISS: ${cacheKey} -> Fetching from MongoDB`);
+
     const {
         category,
         brand,
@@ -54,19 +76,38 @@ export const getProducts = async (queryParams) => {
         Product.countDocuments(filter),
     ]);
 
-    return {
+    const result = {
         total,
         page: pageNum,
         totalPages: Math.ceil(total / limitNum),
         products,
     };
+
+    // 2) Cache result in Redis
+    await cacheSet(cacheKey, result, PRODUCT_CACHE_TTL);
+
+    return { ...result, _source: 'database' };
 };
 
 export const getProductById = async (id) => {
+    const cacheKey = `products:detail:${id}`;
+
+    // 1) Check Redis Cache
+    const cachedProduct = await cacheGet(cacheKey);
+    if (cachedProduct) {
+        logger.info(`⚡ Redis Cache HIT: ${cacheKey}`);
+        return cachedProduct;
+    }
+
+    // 2) Query MongoDB
     const product = await Product.findById(id);
     if (!product) {
         throw new AppError(`Product with ID ${id} not found`, 404);
     }
+
+    // 3) Store in Redis
+    await cacheSet(cacheKey, product, PRODUCT_CACHE_TTL);
+
     return product;
 };
 
@@ -75,7 +116,12 @@ export const getProductsByCategory = async (categorySlug, queryParams = {}) => {
 };
 
 export const createProduct = async (productData) => {
-    return await Product.create(productData);
+    const product = await Product.create(productData);
+
+    // Invalidate product catalog cache
+    await cacheDel('products:*');
+
+    return product;
 };
 
 export const updateProduct = async (id, updateData) => {
@@ -86,6 +132,10 @@ export const updateProduct = async (id, updateData) => {
     if (!product) {
         throw new AppError(`Product with ID ${id} not found`, 404);
     }
+
+    // Invalidate both catalog list cache and specific detail key
+    await cacheDel('products:*');
+
     return product;
 };
 
@@ -94,5 +144,9 @@ export const deleteProduct = async (id) => {
     if (!product) {
         throw new AppError(`Product with ID ${id} not found`, 404);
     }
+
+    // Invalidate all product caches
+    await cacheDel('products:*');
+
     return product;
 };

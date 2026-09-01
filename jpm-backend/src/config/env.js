@@ -11,6 +11,7 @@ const envSchema = z.object({
     JWT_EXPIRES_IN: z.string().default('7d'),
     JWT_COOKIE_EXPIRES_IN: z.string().transform((val) => parseInt(val, 10)).default('7'),
     CORS_ORIGIN: z.string().default('http://localhost:3000'),
+    REDIS_URL: z.string().default('redis://127.0.0.1:6379'),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

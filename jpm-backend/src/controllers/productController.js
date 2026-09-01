@@ -3,6 +3,9 @@ import * as productService from '../services/productService.js';
 
 export const getAllProducts = catchAsync(async (req, res, next) => {
     const result = await productService.getProducts(req.query);
+    if (result._source) {
+        res.setHeader('X-Cache', result._source === 'redis' ? 'HIT' : 'MISS');
+    }
     res.status(200).json({
         status: 'success',
         results: result.products.length,

@@ -46,10 +46,20 @@ app.use(cookieParser());
 app.use(mongoSanitize());
 
 // 2) Health Check Endpoint
-app.get('/api/v1/health', (req, res) => {
+app.get('/api/v1/health', async (req, res) => {
+    const { isRedisReady } = await import('./config/redis.js');
+    const mongoose = (await import('mongoose')).default;
+
+    const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+    const redisStatus = isRedisReady() ? 'connected' : 'disconnected (fallback active)';
+
     res.status(200).json({
         status: 'success',
         message: 'JPM Store Node.js/Express API server is running healthy',
+        services: {
+            database: dbStatus,
+            redis: redisStatus,
+        },
         timestamp: new Date().toISOString(),
         environment: env.NODE_ENV,
     });
