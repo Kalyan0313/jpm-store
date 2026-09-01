@@ -9,48 +9,76 @@ export const createOrder = async (userId, orderData) => {
         throw new AppError('No order items provided', 400);
     }
 
-    // 1) Verify products exist and stock is sufficient
     let totalItemsPrice = 0;
     const itemsToSave = [];
+    const decrementedProducts = [];
 
-    for (const item of orderItems) {
-        const product = await Product.findById(item.product);
-        if (!product) {
-            throw new AppError(`Product with ID ${item.product} not found`, 404);
-        }
-        if (product.stock < item.quantity) {
-            throw new AppError(`Insufficient stock for product "${product.title}". Only ${product.stock} available.`, 400);
+    try {
+        for (const item of orderItems) {
+            // Atomic conditional update: only decrement if stock >= requested quantity
+            const product = await Product.findOneAndUpdate(
+                {
+                    _id: item.product,
+                    stock: { $gte: item.quantity },
+                },
+                {
+                    $inc: { stock: -item.quantity },
+                },
+                {
+                    new: true,
+                }
+            );
+
+            if (!product) {
+                const exists = await Product.findById(item.product);
+                if (!exists) {
+                    throw new AppError(`Product with ID ${item.product} not found`, 404);
+                }
+                throw new AppError(
+                    `Insufficient stock for product "${exists.title}". Only ${exists.stock} available.`,
+                    400
+                );
+            }
+
+            decrementedProducts.push({
+                productId: product._id,
+                quantity: item.quantity,
+            });
+
+            totalItemsPrice += product.price * item.quantity;
+            itemsToSave.push({
+                product: product._id,
+                title: product.title,
+                quantity: item.quantity,
+                price: product.price,
+                thumbnail: product.thumbnail,
+            });
         }
 
-        totalItemsPrice += product.price * item.quantity;
-        itemsToSave.push({
-            product: product._id,
-            title: product.title,
-            quantity: item.quantity,
-            price: product.price,
-            thumbnail: product.thumbnail,
+        const calculatedTotal = totalItemsPrice + (taxPrice || 0) + (shippingPrice || 0);
+
+        const order = await Order.create({
+            user: userId,
+            orderItems: itemsToSave,
+            shippingAddress,
+            paymentMethod: paymentMethod || 'COD',
+            taxPrice: taxPrice || 0,
+            shippingPrice: shippingPrice || 0,
+            totalAmount: calculatedTotal,
+            isPaid: paymentMethod !== 'COD',
+            paidAt: paymentMethod !== 'COD' ? new Date() : undefined,
         });
 
-        // Atomic stock decrement
-        product.stock -= item.quantity;
-        await product.save();
+        return order;
+    } catch (error) {
+        // Rollback any successfully decremented items if an error occurs during multi-item processing
+        for (const dec of decrementedProducts) {
+            await Product.findByIdAndUpdate(dec.productId, {
+                $inc: { stock: dec.quantity },
+            });
+        }
+        throw error;
     }
-
-    const calculatedTotal = totalItemsPrice + (taxPrice || 0) + (shippingPrice || 0);
-
-    const order = await Order.create({
-        user: userId,
-        orderItems: itemsToSave,
-        shippingAddress,
-        paymentMethod: paymentMethod || 'COD',
-        taxPrice: taxPrice || 0,
-        shippingPrice: shippingPrice || 0,
-        totalAmount: calculatedTotal,
-        isPaid: paymentMethod !== 'COD',
-        paidAt: paymentMethod !== 'COD' ? new Date() : undefined,
-    });
-
-    return order;
 };
 
 export const getUserOrders = async (userId) => {
