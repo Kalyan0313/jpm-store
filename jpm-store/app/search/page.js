@@ -35,7 +35,7 @@ export default async function SearchPage({ searchParams }) {
                                     ? `${results.length} results for`
                                     : 'No results for'}
                                 {' '}
-                                <span className={styles.query}>"{query}"</span>
+                                <span className={styles.query}>&quot;{query}&quot;</span>
                             </h1>
                             {results.length === 0 && !error && (
                                 <p className={styles.hint}>Try checking your spelling or using more general terms.</p>

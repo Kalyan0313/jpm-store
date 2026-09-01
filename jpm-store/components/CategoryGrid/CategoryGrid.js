@@ -43,7 +43,7 @@ export default function CategoryGrid() {
             <div className="container">
                 <div className={styles.header}>
                     <h2 className={styles.title}>Shop by Category</h2>
-                    <p className={styles.subtitle}>Find exactly what you're looking for</p>
+                    <p className={styles.subtitle}>Find exactly what you&apos;re looking for</p>
                 </div>
 
                 <div className={styles.grid}>

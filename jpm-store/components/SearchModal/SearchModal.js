@@ -108,14 +108,14 @@ export default function SearchModal({ isOpen, onClose }) {
 
                 {!loading && query && results.length === 0 && (
                     <div className={styles.noResults}>
-                        <p>No results for <strong>"{query}"</strong></p>
+                        <p>No results for <strong>&quot;{query}&quot;</strong></p>
                         <p className={styles.noResultsHint}>Try different keywords or browse our categories.</p>
                     </div>
                 )}
 
                 {results.length > 0 && (
                     <div className={styles.results}>
-                        <p className={styles.resultsLabel}>{results.length} results for "{query}"</p>
+                        <p className={styles.resultsLabel}>{results.length} results for &quot;{query}&quot;</p>
                         {results.map((product) => {
                             const discounted = getDiscountedPrice(product.price, product.discountPercentage);
                             return (
