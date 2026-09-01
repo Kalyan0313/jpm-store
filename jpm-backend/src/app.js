@@ -10,6 +10,9 @@ import { AppError } from './utils/appError.js';
 import { globalErrorHandler } from './middlewares/errorHandler.js';
 import { apiLimiter } from './middlewares/rateLimiter.js';
 
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './docs/swaggerSpec.js';
+
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
@@ -18,7 +21,7 @@ import orderRoutes from './routes/orderRoutes.js';
 const app = express();
 
 // 1) Global Security Middlewares
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false }));
 
 app.use(
     cors({
@@ -65,7 +68,14 @@ app.get('/api/v1/health', async (req, res) => {
     });
 });
 
-// 3) API Routes Mount
+// 3) Swagger/OpenAPI Interactive Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get('/api-docs.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+});
+
+// 4) API Routes Mount
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/categories', categoryRoutes);
